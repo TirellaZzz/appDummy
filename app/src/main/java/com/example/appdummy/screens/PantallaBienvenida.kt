@@ -25,8 +25,6 @@ fun PantallaBienvenida(onEntrar: () -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                modifier = Modifier,
-
                 title = {
                     Text(
                         text = "¡Bienvenido!",

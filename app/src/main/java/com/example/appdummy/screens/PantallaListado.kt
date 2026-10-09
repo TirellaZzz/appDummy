@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +23,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.appdummy.R
+import android.content.Intent
 
 // ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
 
@@ -41,7 +43,7 @@ data class LibroUI(
 @Composable
 fun PantallaListado() {
     // Estado local de la pantalla (en B2 pasará al ViewModel)
-    var busqueda by remember { mutableStateOf("") }
+    var busqueda by rememberSaveable { mutableStateOf("") }
     var autorSeleccionado by remember { mutableStateOf("Todos") }
     var libros by remember {
         mutableStateOf(
@@ -205,6 +207,8 @@ fun PantallaListado() {
 
 @Composable
 fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (Int) -> Unit) {
+    val context = LocalContext.current
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -242,7 +246,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                 IconButton(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.5f),
+                        .weight(1f),
                     onClick = { onToggleLeido(libro.id) }) {
                     Icon(
                         imageVector = if (libro.leido) Icons.Default.BookmarkAdded
@@ -255,7 +259,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                 IconButton(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.5f),
+                        .weight(1f),
                     onClick = { onToggleFavorito(libro.id) }) {
                     Icon(
                         imageVector = if (libro.esFavorito) Icons.Default.Favorite
@@ -265,8 +269,48 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                IconButton(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    onClick = { val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, "${libro.titulo} - ${libro.autor}")
+                    }
+                        context.startActivity(
+                            Intent.createChooser(intent, "Compartir libro")
+                        )
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Compartir libro",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ItemLibroPreview() {
+    MaterialTheme {
+        ItemLibro(
+            libro = LibroUI(
+                id = 1,
+                titulo = "Proyecto Hail Mary",
+                autor = "Andy Weir",
+                year = 2021,
+                isbn = "9788418037016",
+                cover = "",
+                esFavorito = true,
+                leido = false
+            ),
+            onToggleLeido = {},
+            onToggleFavorito = {}
+        )
     }
 }
 
