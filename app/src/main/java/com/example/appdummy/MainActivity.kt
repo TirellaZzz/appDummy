@@ -1,7 +1,5 @@
 package com.example.appdummy
 
-import androidx.compose.runtime.*
-import com.example.appdummy.screens.PantallaListado
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,19 +14,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppDummyTheme {
-                var mostrarListado by remember {
-                    mutableStateOf(false)
-                }
-
-                if (mostrarListado) {
-                    PantallaListado()
-                } else {
-                    PantallaBienvenida(
-                        onEntrar = {
-                            mostrarListado = true
-                        }
-                    )
-                }
+                PantallaBienvenida(
+                    onEntrar = {}
+                )
             }
         }
     }
