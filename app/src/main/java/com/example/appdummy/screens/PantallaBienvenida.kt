@@ -1,4 +1,4 @@
-package com.example.appdummy
+package com.example.appdummy.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
