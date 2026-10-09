@@ -249,8 +249,8 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                         .weight(1f),
                     onClick = { onToggleLeido(libro.id) }) {
                     Icon(
-                        imageVector = if (libro.leido) Icons.Default.BookmarkAdded
-                        else Icons.Default.BookmarkBorder,
+                        imageVector = if (libro.leido) Icons.Default.Visibility
+                        else Icons.Default.VisibilityOff,
                         contentDescription = if (libro.leido) "Quitar leído" else "Marcar como leído",
                         tint = if (libro.leido) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.onSurfaceVariant
