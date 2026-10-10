@@ -35,6 +35,7 @@ AppDummy es una aplicación Android desarrollada con Kotlin y Jetpack Compose pa
 1. Cambio en la variable busqueda con rememberSaveable en PantallaListado.kt 
 2. Uso de CenterAlignedTopAppBar en PantallaBienvenida.kt
 3. Emoji de libro leido y sin leer cambiado 
+4. Agrego un rememberScrollState() para que al rotar la pantalla en PantallaBienvenida se pueda hacer scroll
 
 
 ## Limitaciones conocidas
