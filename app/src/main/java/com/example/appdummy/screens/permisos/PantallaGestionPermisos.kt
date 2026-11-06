@@ -1,7 +1,8 @@
-package com.example.appdummy.screens
+package com.example.appdummy.screens.permisos
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
@@ -38,7 +39,7 @@ fun PantallaGestionPermisos() {
     var estadoPermiso by remember {
         val concedido = ContextCompat.checkSelfPermission(
             context, Manifest.permission.CAMERA
-        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED
 
         mutableStateOf(if (concedido) EstadoPermiso.Concedido else EstadoPermiso.Pendiente)
     }

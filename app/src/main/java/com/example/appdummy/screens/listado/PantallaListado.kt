@@ -1,6 +1,5 @@
-package com.example.appdummy.screens
+package com.example.appdummy.screens.listado
 
-import android.util.Patterns
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,22 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.appdummy.screens.componentes.ItemLibro
+import com.example.appdummy.data.model.Libro
 
 // ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
 
 // Modelo de datos simple (será reemplazado por data class real en B2)
-data class LibroUI(
-    val id: Int = 0,
-    val titulo: String = "",
-    val autor: String = "",
-    val year: Int? = 1900,
-    val isbn: String = "",
-    val cover: String = "",
-    val esFavorito: Boolean = false,
-    val leido: Boolean = false
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaListado() {
@@ -42,7 +30,7 @@ fun PantallaListado() {
     var libros by remember {
         mutableStateOf(
             listOf(
-                LibroUI(
+                Libro(
                     id = 1,
                     titulo = "Proyecto Hail Mary",
                     autor = "Andy Weir",
@@ -52,7 +40,7 @@ fun PantallaListado() {
                     esFavorito = true,
                     leido = false
                 ),
-                LibroUI(
+                Libro(
                     id = 2,
                     titulo = "Juego de tronos",
                     autor = "George R.R. Martin",
@@ -62,7 +50,7 @@ fun PantallaListado() {
                     esFavorito = true,
                     leido = true
                 ),
-                LibroUI(
+                Libro(
                     id = 3,
                     titulo = "Festín de cuervos",
                     autor = "George R.R. Martin",
@@ -71,7 +59,7 @@ fun PantallaListado() {
                     esFavorito = false,
                     leido = false
                 ),
-                LibroUI(
+                Libro(
                     id = 4,
                     titulo = "Cementerio de Animales",
                     autor = "Stephen King",
@@ -80,7 +68,7 @@ fun PantallaListado() {
                     esFavorito = false,
                     leido = true
                 ),
-                LibroUI(
+                Libro(
                     id = 5,
                     titulo = "El juego de Ender",
                     autor = "Orson Scott Card",
@@ -204,7 +192,7 @@ fun PantallaListado() {
 fun ItemLibroPreview() {
     MaterialTheme {
         ItemLibro(
-            libro = LibroUI(
+            libro = Libro(
                 id = 1,
                 titulo = "Proyecto Hail Mary",
                 autor = "Andy Weir",
