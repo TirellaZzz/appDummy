@@ -1,0 +1,105 @@
+
+package com.example.appdummy.screens.componentes
+
+import android.util.Patterns
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import com.example.appdummy.R
+import com.example.appdummy.screens.LibroUI
+
+@Composable
+fun ItemLibro(
+    libro: LibroUI,
+    onToggleLeido: (Int) -> Unit,
+    onToggleFavorito: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(
+                libro.titulo,
+                style = MaterialTheme.typography.titleSmall
+            )
+
+            if (Patterns.WEB_URL.matcher(libro.cover).matches()) {
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(libro.cover)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Portada de ${libro.titulo}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(200.dp)
+                )
+            } else {
+                AsyncImage(
+                    model = R.drawable.nocover,
+                    contentDescription = "Portada de ${libro.titulo}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(200.dp)
+                )
+            }
+
+            Text(
+                text = "${libro.autor} • ${libro.year}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                IconButton(
+                    modifier = Modifier.weight(0.5f),
+                    onClick = { onToggleLeido(libro.id) }
+                ) {
+                    Icon(
+                        imageVector = if (libro.leido)
+                            Icons.Default.BookmarkAdded
+                        else Icons.Default.BookmarkBorder,
+                        contentDescription = if (libro.leido)
+                            "Quitar leído"
+                        else "Marcar como leído",
+                        tint = if (libro.leido)
+                            MaterialTheme.colorScheme.error
+                        else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                IconButton(
+                    modifier = Modifier.weight(0.5f),
+                    onClick = { onToggleFavorito(libro.id) }
+                ) {
+                    Icon(
+                        imageVector = if (libro.esFavorito)
+                            Icons.Default.Favorite
+                        else Icons.Default.FavoriteBorder,
+                        contentDescription = if (libro.esFavorito)
+                            "Quitar favorito"
+                        else "Añadir favorito",
+                        tint = if (libro.esFavorito)
+                            MaterialTheme.colorScheme.error
+                        else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}

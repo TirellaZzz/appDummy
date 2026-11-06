@@ -15,15 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import com.example.appdummy.R
-import android.content.Intent
+import com.example.appdummy.screens.componentes.ItemLibro
 
 // ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
 
@@ -199,94 +193,6 @@ fun PantallaListado() {
                             }
                         )
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (Int) -> Unit) {
-    val context = LocalContext.current
-
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text(libro.titulo, style = MaterialTheme.typography.titleSmall)
-            if (Patterns.WEB_URL.matcher(libro.cover).matches())
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(libro.cover)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Portada de ${libro.titulo}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.width(200.dp)
-                )
-            else // Si no es una URL válida, se muestra una imagen por defecto
-                AsyncImage(
-                    model = R.drawable.nocover,
-                    contentDescription = "Portada de ${libro.titulo}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.width(200.dp)
-                )
-
-            Text(
-                text = "${libro.autor} • ${libro.year}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                IconButton(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    onClick = { onToggleLeido(libro.id) }) {
-                    Icon(
-                        imageVector = if (libro.leido) Icons.Default.Visibility
-                        else Icons.Default.VisibilityOff,
-                        contentDescription = if (libro.leido) "Quitar leído" else "Marcar como leído",
-                        tint = if (libro.leido) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    onClick = { onToggleFavorito(libro.id) }) {
-                    Icon(
-                        imageVector = if (libro.esFavorito) Icons.Default.Favorite
-                        else Icons.Default.FavoriteBorder,
-                        contentDescription = if (libro.esFavorito) "Quitar favorito" else "Añadir favorito",
-                        tint = if (libro.esFavorito) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
-                    onClick = { val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, "${libro.titulo} - ${libro.autor}")
-                    }
-                        context.startActivity(
-                            Intent.createChooser(intent, "Compartir libro")
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Compartir libro",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
             }
         }
