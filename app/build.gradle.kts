@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -60,11 +60,19 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    // Navigation Compose (API tipada disponible desde 2.8.0)
-    implementation("androidx.navigation:navigation-compose:2.9.8")
+    // ViewModel y Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // Kotlin Serialization — imprescindible para las rutas @Serializable
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+// Corrutinas
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+// Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+
+// Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
 }
 
 
