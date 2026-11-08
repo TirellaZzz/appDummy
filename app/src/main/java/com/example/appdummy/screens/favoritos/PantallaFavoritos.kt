@@ -8,6 +8,7 @@ import com.example.appdummy.screens.listado.LibrosUiState
 import com.example.appdummy.screens.listado.LibrosViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -53,8 +54,11 @@ fun PantallaFavoritos(
             Text("Tienes ${librosFavoritos.size} libros favoritos")
 
             LazyVerticalGrid(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 8.dp),
                 columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize()
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(librosFavoritos) { libro ->
                     ItemLibro(

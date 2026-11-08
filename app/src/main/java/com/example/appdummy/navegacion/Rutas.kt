@@ -16,3 +16,6 @@ data object Permisos
 
 @Serializable
 data class Detalle(val id: Int)
+
+@Serializable
+data object Leidos
