@@ -33,11 +33,14 @@ fun ItemLibro(
     libro: Libro,
     onToggleLeido: (Int) -> Unit,
     onToggleFavorito: (Int) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

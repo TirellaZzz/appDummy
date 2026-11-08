@@ -26,7 +26,8 @@ import com.example.appdummy.screens.listado.ItemLibro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaFavoritos(
-    viewModel: LibrosViewModel
+    viewModel: LibrosViewModel,
+    onNavegaADetalle: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -68,6 +69,9 @@ fun PantallaFavoritos(
                         },
                         onToggleFavorito = { _ ->
                             viewModel.toggleFavorito(libro)
+                        },
+                        onClick = {
+                            onNavegaADetalle(libro.id)
                         }
                     )
                 }

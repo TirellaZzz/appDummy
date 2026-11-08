@@ -32,7 +32,8 @@ import com.example.appdummy.data.repository.LibrosRepository
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaListado(
-    viewModel: LibrosViewModel
+    viewModel: LibrosViewModel,
+    onNavegaADetalle: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val busqueda by viewModel.busqueda.collectAsStateWithLifecycle()
@@ -240,11 +241,10 @@ fun PantallaListado(
 
                                 ItemLibro(
                                     libro = libro,
-                                    onToggleLeido = { _ ->
-                                        viewModel.toggleLeido(libro)
-                                    },
-                                    onToggleFavorito = { _ ->
-                                        viewModel.toggleFavorito(libro)
+                                    onToggleLeido = { _ -> viewModel.toggleLeido(libro) },
+                                    onToggleFavorito = { _ -> viewModel.toggleFavorito(libro) },
+                                    onClick = {
+                                        onNavegaADetalle(libro.id)
                                     }
                                 )
                             }
@@ -253,24 +253,5 @@ fun PantallaListado(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ItemLibroPreview() {
-    MaterialTheme {
-        ItemLibro(
-            libro = Libro(
-                id = 1,
-                titulo = "Proyecto Hail Mary",
-                autor = "Andy Weir",
-                year = 2021,
-                isbn = "9788418037016",
-                esFavorito = true
-            ),
-            onToggleLeido = {},
-            onToggleFavorito = {}
-        )
     }
 }

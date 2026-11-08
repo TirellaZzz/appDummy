@@ -18,6 +18,7 @@ import com.example.appdummy.screens.leidos.PantallaLeidos
 import com.example.appdummy.screens.listado.LibrosViewModel
 import com.example.appdummy.screens.listado.PantallaListado
 import com.example.appdummy.screens.permisos.PantallaGestionPermisos
+import com.example.appdummy.screens.detalle.PantallaDetalle
 
 @Composable
 fun AppNavigation() {
@@ -76,19 +77,36 @@ fun AppNavigation() {
 
             composable<Listado> {
                 PantallaListado(
-                    viewModel = librosViewModel
+                    viewModel = librosViewModel,
+                    onNavegaADetalle = { id ->
+                        navController.navigate(Detalle(id))
+                    }
                 )
             }
 
             composable<Favoritos> {
                 PantallaFavoritos(
-                    viewModel = librosViewModel
+                    viewModel = librosViewModel,
+                    onNavegaADetalle = { id ->
+                        navController.navigate(Detalle(id))
+                    }
                 )
             }
 
             composable<Leidos> {
                 PantallaLeidos(
-                    viewModel = librosViewModel
+                    viewModel = librosViewModel,
+                    onNavegaADetalle = { id ->
+                        navController.navigate(Detalle(id))
+                    }
+                )
+            }
+
+            composable<Detalle> {
+                PantallaDetalle(
+                    onVolver = {
+                        navController.navigateUp()
+                    }
                 )
             }
 
