@@ -17,6 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import com.example.appdummy.data.model.Libro
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,8 +41,33 @@ fun PantallaListado(
     val autorSeleccionado by viewModel.autorSeleccionado.collectAsStateWithLifecycle()
     val autoresDisponibles = listOf("Todos") + autores
     val librosFiltrados = viewModel.librosFiltrados
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    var snackbarJob by remember { mutableStateOf<Job?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventos.collect { evento ->
+            when (evento) {
+                is LibrosEvento.MostrarSnackbar -> {
+                    // Cancelar el Snackbar anterior si existe
+                    snackbarJob?.cancel()
+
+                    // Descartar el Snackbar visible
+                    snackbarHostState.currentSnackbarData?.dismiss()
+
+                    // Mostrar el nuevo Snackbar
+                    snackbarJob = scope.launch {
+                        snackbarHostState.showSnackbar(evento.mensaje)
+                    }
+                }
+            }
+        }
+    }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        },
         topBar = {
             TopAppBar(
                 title = { Text("AppDummy") },

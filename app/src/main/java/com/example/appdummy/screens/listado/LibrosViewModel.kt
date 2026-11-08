@@ -11,6 +11,9 @@ import com.example.appdummy.data.model.Libro
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 class LibrosViewModel (private val repository: LibrosRepository) : ViewModel(){
     private val _uiState = MutableStateFlow<LibrosUiState>(
@@ -28,6 +31,13 @@ class LibrosViewModel (private val repository: LibrosRepository) : ViewModel(){
     )
     val autorSeleccionado: StateFlow<String> =
         _autorSeleccionado.asStateFlow()
+
+    private val _eventos = MutableSharedFlow<LibrosEvento>(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
+
+    val eventos: SharedFlow<LibrosEvento> = _eventos.asSharedFlow()
 
     private val _busqueda = MutableStateFlow(
         ""
@@ -114,6 +124,16 @@ class LibrosViewModel (private val repository: LibrosRepository) : ViewModel(){
             }
 
             _uiState.value = LibrosUiState.Exito(librosActualizados)
+
+            val mensaje = if (libro.esFavorito) {
+                "\"${libro.titulo}\" eliminado de favoritos"
+            } else {
+                "\"${libro.titulo}\" añadido a favoritos"
+            }
+
+            viewModelScope.launch {
+                _eventos.emit(LibrosEvento.MostrarSnackbar(mensaje))
+            }
         }
     }
 
