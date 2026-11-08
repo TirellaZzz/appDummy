@@ -80,6 +80,9 @@ fun AppNavigation() {
                     viewModel = librosViewModel,
                     onNavegaADetalle = { id ->
                         navController.navigate(Detalle(id))
+                    },
+                    onNavegaAPermisos = {
+                        navController.navigate(Permisos)
                     }
                 )
             }
@@ -111,7 +114,9 @@ fun AppNavigation() {
             }
 
             composable<Permisos> {
-                PantallaGestionPermisos()
+                PantallaGestionPermisos(
+                    onVolver = { navController.navigateUp() }
+                )
             }
         }
     }

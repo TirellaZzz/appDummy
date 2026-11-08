@@ -33,7 +33,8 @@ import com.example.appdummy.data.repository.LibrosRepository
 @Composable
 fun PantallaListado(
     viewModel: LibrosViewModel,
-    onNavegaADetalle: (Int) -> Unit
+    onNavegaADetalle: (Int) -> Unit,
+    onNavegaAPermisos: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val busqueda by viewModel.busqueda.collectAsStateWithLifecycle()
@@ -88,10 +89,12 @@ fun PantallaListado(
             TopAppBar(
                 title = { Text("AppDummy") },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(
+                        onClick = onNavegaAPermisos
+                    ) {
                         Icon(
                             Icons.Default.AccountCircle,
-                            contentDescription = "Perfil"
+                            contentDescription = "Gestión de permisos"
                         )
                     }
                 }

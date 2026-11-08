@@ -13,11 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 
 // ─── screens/PantallaGestionPermisos.kt ──────────────────────────────────────────────────────────
 
@@ -29,10 +29,11 @@ sealed class EstadoPermiso {
     data object DenegadoPermanentemente : EstadoPermiso()
 }
 
-@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaGestionPermisos() {
+fun PantallaGestionPermisos(
+    onVolver: () -> Unit
+) {
     val context = LocalContext.current
 
     // Comprobación inicial del estado del permiso de cámara
@@ -52,7 +53,21 @@ fun PantallaGestionPermisos() {
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Permisos de AppDummy") }) }
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Permisos de AppDummy")
+                },
+                navigationIcon = {
+                    IconButton(onClick = onVolver) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver"
+                        )
+                    }
+                }
+            )
+        }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -110,14 +125,5 @@ fun PantallaGestionPermisos() {
                 }
             }
         }
-    }
-
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PantallaPermsisosPreview() {
-    MaterialTheme {
-        PantallaGestionPermisos()
     }
 }
