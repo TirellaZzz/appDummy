@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.appdummy.screens.bienvenida.PantallaBienvenida
+import com.example.appdummy.navegacion.AppNavigation
 import com.example.appdummy.ui.theme.AppDummyTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,9 +14,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppDummyTheme {
-                PantallaBienvenida(
-                    onEntrar = {}
-                )
+                AppNavigation()
             }
         }
     }
