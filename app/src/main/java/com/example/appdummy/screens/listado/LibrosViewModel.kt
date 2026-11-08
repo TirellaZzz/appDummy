@@ -115,20 +115,26 @@ class LibrosViewModel (private val repository: LibrosRepository) : ViewModel(){
         val estado = _uiState.value
 
         if (estado is LibrosUiState.Exito) {
-            val librosActualizados = estado.libros.map { libroActual ->
-                if (libroActual.id == libro.id) {
-                    libroActual.copy(esFavorito = !libroActual.esFavorito)
+
+            val libroActual = estado.libros.find { it.id == libro.id }
+                ?: return
+
+            val nuevoEstado = !libroActual.esFavorito
+
+            val librosActualizados = estado.libros.map { libroExistente ->
+                if (libroExistente.id == libro.id) {
+                    libroExistente.copy(esFavorito = nuevoEstado)
                 } else {
-                    libroActual
+                    libroExistente
                 }
             }
 
             _uiState.value = LibrosUiState.Exito(librosActualizados)
 
-            val mensaje = if (libro.esFavorito) {
-                "\"${libro.titulo}\" eliminado de favoritos"
+            val mensaje = if (nuevoEstado) {
+                "\"${libroActual.titulo}\" añadido a favoritos"
             } else {
-                "\"${libro.titulo}\" añadido a favoritos"
+                "\"${libroActual.titulo}\" eliminado de favoritos"
             }
 
             viewModelScope.launch {
@@ -141,15 +147,31 @@ class LibrosViewModel (private val repository: LibrosRepository) : ViewModel(){
         val estado = _uiState.value
 
         if (estado is LibrosUiState.Exito) {
-            val librosActualizados = estado.libros.map { libroActual ->
-                if (libroActual.id == libro.id) {
-                    libroActual.copy(leido = !libroActual.leido)
+
+            val libroActual = estado.libros.find { it.id == libro.id }
+                ?: return
+
+            val nuevoEstado = !libroActual.leido
+
+            val librosActualizados = estado.libros.map { libroExistente ->
+                if (libroExistente.id == libro.id) {
+                    libroExistente.copy(leido = nuevoEstado)
                 } else {
-                    libroActual
+                    libroExistente
                 }
             }
 
             _uiState.value = LibrosUiState.Exito(librosActualizados)
+
+            val mensaje = if (nuevoEstado) {
+                "\"${libroActual.titulo}\" marcado como leído"
+            } else {
+                "\"${libroActual.titulo}\" marcado como no leído"
+            }
+
+            viewModelScope.launch {
+                _eventos.emit(LibrosEvento.MostrarSnackbar(mensaje))
+            }
         }
     }
 }

@@ -27,20 +27,35 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.example.appdummy.data.model.Libro
+import com.example.appdummy.data.repository.LibrosRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaListado(
-    viewModel: LibrosViewModel = viewModel(
-        factory = LibrosViewModel.Factory
-    )
+    viewModel: LibrosViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val busqueda by viewModel.busqueda.collectAsStateWithLifecycle()
     val autores by viewModel.autores.collectAsStateWithLifecycle()
     val autorSeleccionado by viewModel.autorSeleccionado.collectAsStateWithLifecycle()
     val autoresDisponibles = listOf("Todos") + autores
-    val librosFiltrados = viewModel.librosFiltrados
+
+    val libros = (uiState as? LibrosUiState.Exito)?.libros
+        ?: emptyList()
+
+    val librosFiltrados = libros.filter { libro ->
+
+        val coincideBusqueda =
+            libro.titulo.contains(busqueda, ignoreCase = true) ||
+                    libro.autor.contains(busqueda, ignoreCase = true)
+
+        val coincideAutor =
+            autorSeleccionado == "Todos" ||
+                    libro.autor == autorSeleccionado
+
+        coincideBusqueda && coincideAutor
+    }
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     var snackbarJob by remember { mutableStateOf<Job?>(null) }
@@ -257,13 +272,5 @@ fun ItemLibroPreview() {
             onToggleLeido = {},
             onToggleFavorito = {}
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PantallaListadoPreview() {
-    MaterialTheme {
-        PantallaListado()
     }
 }

@@ -21,12 +21,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import com.example.appdummy.screens.listado.ItemLibro
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaFavoritos(
-    viewModel: LibrosViewModel = viewModel(
-        factory = LibrosViewModel.Factory
-    )
+    viewModel: LibrosViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
