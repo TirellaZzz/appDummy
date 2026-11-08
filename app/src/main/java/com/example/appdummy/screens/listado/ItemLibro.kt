@@ -33,7 +33,7 @@ fun ItemLibro(
     libro: Libro,
     onToggleLeido: (Int) -> Unit,
     onToggleFavorito: (Int) -> Unit,
-    modifier: Modifier = Modifier.Companion
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
